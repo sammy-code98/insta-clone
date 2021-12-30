@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FirebaseContext from "../context/firebase";
+import * as ROUTES from "../constants/routes";
 function Login() {
   const history = useNavigate();
   const { firebase } = useContext(FirebaseContext);
@@ -12,7 +13,18 @@ function Login() {
 
   const isInvalid = password === "" || emailAddress === "";
 
-  const handleLogin = () => {};
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
+      history.push(ROUTES.DASHBOARD);
+    } catch (error) {
+      setEmailAddress("");
+      setPassword("");
+      setError(error.message)
+    }
+  };
   useEffect(() => {
     document.title = "Login - Insta-clone";
   }, []);
@@ -21,7 +33,7 @@ function Login() {
       <div className="flex w-3/5">
         <img
           src="/images/iphone-with-profile.jpg"
-          alt="login image"
+          alt="loginimage"
           className="max-w-full"
         />
       </div>
@@ -59,8 +71,11 @@ function Login() {
           </form>
         </div>
         <div className="flex justify-center items-center flex-col w-full bg-white p-4 border border-gray-primary">
-          <p className="text-sm">Don't have an account? {``}
-          <Link to="/signup" className="font-bold text-blue-medium">Sign Up</Link>
+          <p className="text-sm">
+            Don't have an account? {``}
+            <Link to="/signup" className="font-bold text-blue-medium">
+              Sign Up
+            </Link>
           </p>
         </div>
       </div>
