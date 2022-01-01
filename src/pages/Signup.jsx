@@ -21,9 +21,35 @@ function SignUp() {
 
     // do some checks here
     const usernameExist = await doesUsernameExist(username);
-
-    try {
-    } catch (error) {}
+    if (usernameExist.length) {
+      try {
+        const createdUserResult = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(emailAddress, password);
+        // authentication
+        await createdUserResult.user.updateProfile({
+          displayName: username,
+        });
+        // firebase  user collection
+        await firebase.firestore().collection("users").add({
+          userId: createdUserResult.user.uid,
+          username: username.toLowerCase(),
+          fullName,
+          emailAddress: emailAddress.toLowerCase(),
+          following: [],
+          dateCreated: Date.now(),
+        });
+        navigate(ROUTES.DASHBOARD);
+      } catch (error) {
+        setFullName("");
+        setUsername("");
+        setEmailAddress("");
+        setPassword("");
+        setError(error.message);
+      }
+    }else{
+        setError("That username already exists, please try another")
+    }
   };
   useEffect(() => {
     document.title = "SignUp - Insta-clone";
