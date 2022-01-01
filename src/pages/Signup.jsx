@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FirebaseContext from "../context/firebase";
 import * as ROUTES from "../constants/routes";
+import { doesUsernameExist } from "../services/firebase";
 function SignUp() {
   const navigate = useNavigate();
   const { firebase } = useContext(FirebaseContext);
@@ -19,7 +20,7 @@ function SignUp() {
     e.preventDefault();
 
     // do some checks here
-    const usernameExist = await doesUsernameExist(username)
+    const usernameExist = await doesUsernameExist(username);
 
     try {
     } catch (error) {}
@@ -44,7 +45,7 @@ function SignUp() {
           {error && <p className="mb-4 text-xs text-red-primary">{error}</p>}
 
           <form onSubmit={handleSignUp} method="POST">
-          <input
+            <input
               aria-label="Enter your Username"
               type="text"
               placeholder="Username"
@@ -52,7 +53,7 @@ function SignUp() {
               onChange={({ target }) => setUsername(target.value)}
               value={username}
             />
-             <input
+            <input
               aria-label="Enter your Fullname"
               type="text"
               placeholder="FullName"
@@ -89,7 +90,7 @@ function SignUp() {
         </div>
         <div className="flex justify-center items-center flex-col w-full bg-white p-4 border border-gray-primary">
           <p className="text-sm">
-             Have an account? {``}
+            Have an account? {``}
             <Link to={ROUTES.LOGIN} className="font-bold text-blue-medium">
               Log In
             </Link>
