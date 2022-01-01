@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FirebaseContext from "../context/firebase";
 import * as ROUTES from "../constants/routes";
+import { doesUsernameExist } from "../services/firebase";
 function SignUp() {
   const navigate = useNavigate();
   const { firebase } = useContext(FirebaseContext);
@@ -18,8 +19,37 @@ function SignUp() {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    try {
-    } catch (error) {}
+    // do some checks here
+    const usernameExist = await doesUsernameExist(username);
+    if (usernameExist.length) {
+      try {
+        const createdUserResult = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(emailAddress, password);
+        // authentication
+        await createdUserResult.user.updateProfile({
+          displayName: username,
+        });
+        // firebase  user collection
+        await firebase.firestore().collection("users").add({
+          userId: createdUserResult.user.uid,
+          username: username.toLowerCase(),
+          fullName,
+          emailAddress: emailAddress.toLowerCase(),
+          following: [],
+          dateCreated: Date.now(),
+        });
+        navigate(ROUTES.DASHBOARD);
+      } catch (error) {
+        setFullName("");
+        setUsername("");
+        setEmailAddress("");
+        setPassword("");
+        setError(error.message);
+      }
+    }else{
+        setError("That username already exists, please try another")
+    }
   };
   useEffect(() => {
     document.title = "SignUp - Insta-clone";
@@ -41,19 +71,21 @@ function SignUp() {
           {error && <p className="mb-4 text-xs text-red-primary">{error}</p>}
 
           <form onSubmit={handleSignUp} method="POST">
-          <input
+            <input
               aria-label="Enter your Username"
               type="text"
               placeholder="Username"
               className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setUsername(target.value)}
+              value={username}
             />
-             <input
+            <input
               aria-label="Enter your Fullname"
               type="text"
               placeholder="FullName"
               className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setFullName(target.value)}
+              value={fullName}
             />
             <input
               aria-label="Enter your email address"
@@ -61,6 +93,7 @@ function SignUp() {
               placeholder="Email Address"
               className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setEmailAddress(target.value)}
+              value={emailAddress}
             />
             <input
               aria-label="Enter your password"
@@ -68,6 +101,7 @@ function SignUp() {
               placeholder="Password"
               className="text-sm text-gray-base w-full mr-3 py-5 mt-4 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setPassword(target.value)}
+              value={password}
             />
             <button
               disabled={isInvalid}
@@ -82,8 +116,8 @@ function SignUp() {
         </div>
         <div className="flex justify-center items-center flex-col w-full bg-white p-4 border border-gray-primary">
           <p className="text-sm">
-             Have an account? {``}
-            <Link to="/login" className="font-bold text-blue-medium">
+            Have an account? {``}
+            <Link to={ROUTES.LOGIN} className="font-bold text-blue-medium">
               Log In
             </Link>
           </p>
