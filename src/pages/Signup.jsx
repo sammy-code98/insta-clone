@@ -21,7 +21,7 @@ function SignUp() {
 
     // do some checks here
     const usernameExist = await doesUsernameExist(username);
-    if (usernameExist.length) {
+    if (!usernameExist.length) {
       try {
         const createdUserResult = await firebase
           .auth()
@@ -37,6 +37,7 @@ function SignUp() {
           fullName,
           emailAddress: emailAddress.toLowerCase(),
           following: [],
+          followers: [],
           dateCreated: Date.now(),
         });
         navigate(ROUTES.DASHBOARD);
