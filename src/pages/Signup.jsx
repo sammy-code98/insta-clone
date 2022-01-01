@@ -18,6 +18,9 @@ function SignUp() {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
+    // do some checks here
+    const usernameExist = await doesUsernameExist(username)
+
     try {
     } catch (error) {}
   };
