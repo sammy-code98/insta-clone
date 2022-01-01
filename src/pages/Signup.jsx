@@ -47,6 +47,7 @@ function SignUp() {
               placeholder="Username"
               className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setUsername(target.value)}
+              value={username}
             />
              <input
               aria-label="Enter your Fullname"
@@ -54,6 +55,7 @@ function SignUp() {
               placeholder="FullName"
               className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setFullName(target.value)}
+              value={fullName}
             />
             <input
               aria-label="Enter your email address"
@@ -61,6 +63,7 @@ function SignUp() {
               placeholder="Email Address"
               className="text-sm text-gray-base w-full mr-3 py-5 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setEmailAddress(target.value)}
+              value={emailAddress}
             />
             <input
               aria-label="Enter your password"
@@ -68,6 +71,7 @@ function SignUp() {
               placeholder="Password"
               className="text-sm text-gray-base w-full mr-3 py-5 mt-4 px-4 h-2 border border-gray-primary rounded mb-2"
               onChange={({ target }) => setPassword(target.value)}
+              value={password}
             />
             <button
               disabled={isInvalid}
