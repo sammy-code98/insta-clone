@@ -18,7 +18,7 @@ function Login() {
 
     try {
       await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
-      navigate.push(ROUTES.DASHBOARD);
+      navigate(ROUTES.DASHBOARD);
     } catch (error) {
       setEmailAddress("");
       setPassword("");
