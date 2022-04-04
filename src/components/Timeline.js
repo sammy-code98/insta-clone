@@ -1,6 +1,6 @@
 function Timeline() {
   return (
-    <div>
+    <div className="container col-span-2">
       <p>i m the timeline</p>
     </div>
   );
