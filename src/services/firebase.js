@@ -23,3 +23,11 @@ export async function getUserByUserId(userId) {
   const user = result.docs.map((item) => ({ ...item.data(), docId: item.id }));
   return user;
 }
+
+// get suggested profiile but with a limit of 10
+export async function getSuggestedProfiles(userId) {
+  const result = await firebase.firestore().collection("users").limit(10).get();
+
+  console.log(result);
+  return result;
+}
