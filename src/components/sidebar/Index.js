@@ -9,7 +9,7 @@ function Sidebar() {
   return (
     <div className="p-4 ">
       <User username={username} fullName={fullName}/>
-      <Suggestions userId={userId} following={following} docId={docId}/>
+      <Suggestions userId={userId} following={following} loggedInUserDocId={docId}/>
     </div>
   );
 }
