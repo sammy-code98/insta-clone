@@ -6,7 +6,7 @@ import {
   updateFollowedUserFollowers,
 } from "../../services/firebase";
 export default function SuggestedProfile({
-  spDocId,
+  profileDocId,
   username,
   profileId,
   userId,
@@ -18,7 +18,7 @@ export default function SuggestedProfile({
     // update  the following  array of loggedin user
     await updateLoggedInUserFollowing(loggedInUserDocId, profileId, false);
     // update te followesrs array of  the user who has been followed
-    await updateFollowedUserFollowers(spDocId, userId);
+    await updateFollowedUserFollowers(profileDocId, userId,false);
   }
 
   return !followed ? (
@@ -45,7 +45,7 @@ export default function SuggestedProfile({
 }
 
 SuggestedProfile.propTypes = {
-  spDocId: PropTypes.string.isRequired,
+  profileDocId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   profileId: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,

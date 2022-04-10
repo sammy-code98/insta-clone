@@ -71,6 +71,18 @@ export async function updateLoggedInUserFollowing(
     });
 }
 
-export async function updateFollowedUserFollowers(){
-    
+export async function updateFollowedUserFollowers(
+  profileDocId,
+  userId,
+  isFollowingProfile
+) {
+  return firebase
+    .firestore()
+    .collection("users")
+    .doc(profileDocId)
+    .update({
+      followers: isFollowingProfile
+        ? FieldValue.arrayRemove(userId)
+        : FieldValue.arrayUnion(userId),
+    });
 }
