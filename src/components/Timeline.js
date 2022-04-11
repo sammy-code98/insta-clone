@@ -1,3 +1,4 @@
+import  Skeleton from "react-loading-skeleton"
 function Timeline() {
   return (
     <div className="container col-span-2">
