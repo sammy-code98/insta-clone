@@ -19,10 +19,6 @@ function App() {
           <Routes>
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.SIGN_UP} element={<Signup />} />
-
-            {/* <ProtectedRoute user={user} path={ROUTES.DASHBOARD} exact>
-              <Dashboard />
-            </ProtectedRoute> */}
             <Route
               path={ROUTES.DASHBOARD}
               element={
