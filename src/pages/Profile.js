@@ -11,10 +11,10 @@ export default function Profile() {
     async function checkUserExists() {
       const user = await getUserByUsername(username);
       if (user.length > 0) {
-        setUser(user);
+        setUser(user[0]);
         setUserExists(true);
       } else {
-        setUserExists(false);
+        // setUserExists(false);
         history.push(ROUTES.NOT_FOUND);
       }
     }
