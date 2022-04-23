@@ -23,7 +23,7 @@ export default function Profile() {
   //   console.log("myuser:", username);
   return userExists ? (
     <div className="bg-gray-background ">
-      <div className="mx-auto max-w-screen-lg ">{username}</div>
+      <div className="mx-auto max-w-screen-lg ">{user.fullName}</div>
     </div>
   ) : null;
 }
