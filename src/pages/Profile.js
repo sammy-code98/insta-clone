@@ -28,7 +28,7 @@ export default function Profile() {
       <Header />
 
       <div className="mx-auto max-w-screen-lg ">
-        <UserProfile  username={username} />
+        <UserProfile  user={user} />
       </div>
     </div>
   ) : null;
