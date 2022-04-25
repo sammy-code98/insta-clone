@@ -131,3 +131,14 @@ export async function getUserByUsername(username) {
   }));
   // return user.length > 0 ? user : false;
 }
+
+export async function getUserIdByUsername(username) {
+  const result = await firebase.firestore().collection('users').where()
+
+}
+
+export async function getUserPhotosByUsername(username) {
+  const userId = await getUserIdByUsername(username);
+
+
+}
