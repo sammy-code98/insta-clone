@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
 import useUser from "../../hooks/use-user";
 import { isUserFollowingProfile } from "../../services/firebase";
+import { DEFAULT_IMAGE_PATH } from '../../constants/paths';
+
 export default function Header({
   photosCount,
   profile: {
@@ -18,6 +20,8 @@ export default function Header({
   const { user } = useUser();
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
   const activeBtnFollow = user.username && user.username !== profileUsername;
+
+  const handleToggleFollow = () => 1
 
   useEffect(() => {
     const isLoggedInUserFollowingProfile = async () => {
@@ -40,12 +44,24 @@ export default function Header({
             className="rounded-full h-40 w-40 flex"
             alt={`${user.username} profile `}
             src={`/images/avatars/${profileUsername}.jpg`}
+            onError={(e) => {
+              e.target.src = DEFAULT_IMAGE_PATH;
+            }}
           />
         )}
       </div>
       <div className="flex items-center justify-center flex-col col-span-2">
         <div className="container flex item-center">
           <p className="text-2xl mr-4">{profileUsername}</p>
+          {activeBtnFollow && (
+            <button
+              className="bg-blue-medium font-bold text-sm rounded text-white w-20 h-8"
+              type="button"
+              onClick={handleToggleFollow}
+            >
+              {isFollowingProfile ? "Unfollow" : "Follow"}
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -59,8 +75,7 @@ Header.propTypes = {
     userId: PropTypes.string,
     fullName: PropTypes.string,
     followers: PropTypes.array,
-    username: PropTypes.string
-
+    username: PropTypes.string,
   }).isRequired,
   followerCount: PropTypes.number.isRequired,
   setFollowerCount: PropTypes.func.isRequired,
