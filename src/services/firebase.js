@@ -147,7 +147,10 @@ export async function getUserPhotosByUsername(username) {
   }));
 }
 
-export async function isUserFollowingProfile(loggedInUserUsername, profileUserId) {
+export async function isUserFollowingProfile(
+  loggedInUserUsername,
+  profileUserId
+) {
   const result = await firebase
     .firestore()
     .collection("users")
@@ -155,11 +158,22 @@ export async function isUserFollowingProfile(loggedInUserUsername, profileUserId
     .where("following", "array-contains", profileUserId)
     .get();
 
-    // destruture the response and present it as an object instead of an array
+  // destruture the response and present it as an object instead of an array
   const [response = {}] = result.docs.map((item) => ({
     ...item.data(),
     docId: item.id,
   }));
   // console.log("response", response);
-  return response.userId
+  return response.userId;
+}
+
+export async function toggleFollow(
+  isFollowingProfile,
+  activeUserDocId,
+  profileDocId,
+  profileUserId,
+  followingUserId
+) {
+  await updateLoggedInUserFollowing(activeUserDocId,profileUserId,isFollowingProfile);
+  await  updateFollowedUserFollowers(profileDocId,followingUserId, isFollowingProfile)
 }
