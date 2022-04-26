@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
 import useUser from "../../hooks/use-user";
 import { isUserFollowingProfile } from "../../services/firebase";
-import { DEFAULT_IMAGE_PATH } from '../../constants/paths';
+import { DEFAULT_IMAGE_PATH } from "../../constants/paths";
 
 export default function Header({
   photosCount,
@@ -11,6 +11,7 @@ export default function Header({
     docId: profileDocId,
     userId: profileUserId,
     following = [],
+    followers = [],
     fullname,
   },
   followerCount,
@@ -21,7 +22,14 @@ export default function Header({
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
   const activeBtnFollow = user.username && user.username !== profileUsername;
 
-  const handleToggleFollow = () => 1
+  const handleToggleFollow = () => {
+    setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
+    setFollowerCount({
+      followerCount: isFollowingProfile
+        ? followers.length - 1
+        : followers.length + 1,
+    });
+  };
 
   useEffect(() => {
     const isLoggedInUserFollowingProfile = async () => {
@@ -29,11 +37,13 @@ export default function Header({
         user.username,
         profileUserId
       );
-      setIsFollowingProfile(isFollowing);
+      // the double exclamation turns the value to a true or false value
+      setIsFollowingProfile(!!isFollowing);
     };
     if (user.username && profileUserId) {
       isLoggedInUserFollowingProfile();
     }
+    console.log("followecount:", followerCount);
   }, [user.username, profileUserId]);
 
   return (
@@ -58,6 +68,11 @@ export default function Header({
               className="bg-blue-medium font-bold text-sm rounded text-white w-20 h-8"
               type="button"
               onClick={handleToggleFollow}
+              onKeyDown={(event) =>{
+                if(event.key === 'Enter'){
+                  handleToggleFollow()
+                }
+              }}
             >
               {isFollowingProfile ? "Unfollow" : "Follow"}
             </button>
@@ -74,7 +89,9 @@ Header.propTypes = {
     docId: PropTypes.string,
     userId: PropTypes.string,
     fullName: PropTypes.string,
+    following: PropTypes.array,
     followers: PropTypes.array,
+
     username: PropTypes.string,
   }).isRequired,
   followerCount: PropTypes.number.isRequired,
