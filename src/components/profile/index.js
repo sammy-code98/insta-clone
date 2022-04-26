@@ -27,11 +27,16 @@ export default function Profile({ user }) {
       });
     }
     getProfileInfoAndPhotos();
-  }, [user.username]);
+  }, [user, user.username]);
 
   return (
     <>
-      <Header />
+      <Header
+        photosCount={photosCollection ? photosCollection.length : 0}
+        profile={profile}
+        followerCount={followerCount}
+        setFollowerCount={dispatch}
+      />
       <Photos photos={photosCollection} />
       <p>hello {user.username}</p>
     </>
