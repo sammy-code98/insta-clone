@@ -125,9 +125,41 @@ export async function getUserByUsername(username) {
     // conditionally check if username exists
     .where("username", "==", username)
     .get();
-   return result.docs.map((item) => ({
+  return result.docs.map((item) => ({
     ...item.data(),
     docId: item.id,
   }));
   // return user.length > 0 ? user : false;
+}
+
+export async function getUserPhotosByUsername(username) {
+  const [user] = await getUserByUsername(username);
+
+  const result = await firebase
+    .firestore()
+    .collection("photos")
+    .where("userId", "==", user.userId)
+    .get();
+
+  return result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id,
+  }));
+}
+
+export async function isUserFollowingProfile(loggedInUserUsername, profileUserId) {
+  const result = await firebase
+    .firestore()
+    .collection("users")
+    .where("username", "==", loggedInUserUsername)
+    .where("following", "array-contains", profileUserId)
+    .get();
+
+    // destruture the response and present it as an object instead of an array
+  const [response = {}] = result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id,
+  }));
+  // console.log("response", response);
+  return response.userId
 }
