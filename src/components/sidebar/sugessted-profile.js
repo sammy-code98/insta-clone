@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { DEFAULT_IMAGE_PATH } from "../../constants/paths"
+
 import {
   updateLoggedInUserFollowing,
   updateFollowedUserFollowers,
@@ -25,12 +27,15 @@ export default function SuggestedProfile({
     <div className="flex flex-row items-center align-items justify-between">
       <div className="flex items-center justify-between">
         <img
-          className="rounded-full w-3 mr-3 flex "
+          className="rounded-full w-6  mr-3 flex "
           src={`/images/avatars/${username}.jpg`}
           alt="suggestedProfiles"
+          onError={(e) => {
+            e.target.src = DEFAULT_IMAGE_PATH;
+          }}
         />
         <Link to={`/p/${username}`}>
-          <p className="font-bold text-sm">{username}</p>?
+          <p className="font-bold text-sm">{username}</p>
         </Link>
       </div>
       <button
