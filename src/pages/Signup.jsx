@@ -49,6 +49,7 @@ function SignUp() {
         setError(error.message);
       }
     }else{
+      setUsername("")
         setError("That username already exists, please try another")
     }
   };
